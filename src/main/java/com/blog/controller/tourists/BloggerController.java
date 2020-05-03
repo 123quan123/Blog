@@ -45,19 +45,19 @@ import javax.servlet.http.HttpServletRequest;
 /* 24:   */   {
                 //shiro鉴别
 /* 25:37 */     Subject subject = SecurityUtils.getSubject();
-/* 26:38 */     UsernamePasswordToken token = new UsernamePasswordToken(blogger.getUserName(), CryptographyUtil.md5(blogger.getPassword(), "java1234"));
-/* 27:   */     try
+    /* 26:38 */     UsernamePasswordToken token = new UsernamePasswordToken(blogger.getUserName(), CryptographyUtil.md5(blogger.getPassword(), "java1234"));
+    /* 27:   */     try
 /* 28:   */     {
                   //传递token给shiro的realm
 /* 29:40 */       subject.login(token);
-/* 30:41 */       return "redirect:/admin/main.jsp";
+        /* 36:45 */
+        /* 30:41 */ return "redirect:/admin/main.jsp";
 /* 31:   */     }
 /* 32:   */     catch (Exception e)
 /* 33:   */     {
 ///* 34:43 */       e.printStackTrace();
 /* 35:44 */       request.setAttribute("blogger", blogger);
-                  publisher.doPublisher(new RefreshBlogType(applicationContext));
-/* 36:45 */       request.setAttribute("errorInfo", "用户名或密码错误！");
+                   request.setAttribute("errorInfo", "用户名或密码错误！");
 /* 37:   */     }
 /* 38:46 */     return "login";
 /* 39:   */   }

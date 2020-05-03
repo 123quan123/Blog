@@ -3,10 +3,7 @@ package com.blog.realm;
 import com.blog.entity.Blogger;
 import com.blog.service.BloggerService;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.AuthenticationInfo;
-import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.Permission;
 import org.apache.shiro.realm.AuthorizingRealm;
@@ -40,12 +37,13 @@ public class MyRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
-        String userName = (String) authenticationToken.getPrincipal();
+        UsernamePasswordToken usernamePasswordToken = (UsernamePasswordToken) authenticationToken;
+        String username = usernamePasswordToken.getUsername();
+
         //让shrio去判断
-        Blogger blogger = bloggerService.getByUserName(userName);
+        Blogger blogger = bloggerService.getByUserName(username);
         if (blogger != null) {
             Subject subject = SecurityUtils.getSubject();
-            subject.getSession().setAttribute("currentUser", blogger);
             AuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(blogger.getUserName(), blogger.getPassword(), getName());
             return authenticationInfo;
         }
